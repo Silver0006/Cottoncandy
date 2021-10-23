@@ -13,6 +13,7 @@ ECHO 6. Set Audit Policies
 ECHO 7. Deletes all files that go against no fun policy (Proceed with Caution)
 ECHO 8. UAC Consent Prompt Behavior
 ECHO 9. Enable Smart Screen
+ECHO B. Resets Windows Firewall to Default Settings
 ECHO A. All of the above (Proceed with Caution must be Done Separately)
 ECHO E. End
 
@@ -28,6 +29,7 @@ if '%choice%'=='6' goto aup
 if '%choice%'=='7' goto nf
 if '%choice%'=='8' goto uac
 if '%choice%'=='9' goto ss
+if '%choice%'=='B' goto rfs
 if '%choice%'=='A' goto all
 if '%choice%'=='E' goto end
 
@@ -94,6 +96,10 @@ REG ADD HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\CurrentVersion /v
 REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft /v SmartScreenForTrustedDownloadsEnabled /t REG_DWORD /d 1 /f
 goto start
 
+:rfs
+netsh advfirewall reset
+goto start
+
 :all
 net user guest /active:no
 net user administrator /active:no
@@ -118,6 +124,7 @@ REG ADD HKLM\SOFTWARE\Policies\Microsoft\Windows\System /v EnableSmartScreen /t 
 REG ADD HKLM\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\Explorer /v EnableSmartScreen /t REG_DWORD /d 2 /f
 REG ADD HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\CurrentVersion /v EnableWebContentEvaluation /t REG_DWORD /d 1 /f
 REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft /v SmartScreenForTrustedDownloadsEnabled /t REG_DWORD /d 1 /f
+netsh advfirewall reset
 
 goto start
 
