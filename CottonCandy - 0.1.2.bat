@@ -23,7 +23,7 @@ goto start1
 cls
 :start2
 ECHO.
-Echo ----CottonCandy 0.1.1 Created by Aidan Patrick Marias----
+Echo ----CottonCandy 0.1.2 Created by Aidan Patrick Marias----
 ECHO 1. Disable Guest and Admin Status
 ECHO 2. Rename Guest and Admin Accounts
 ECHO 3. Disable Requirement Ctrl+Alt+Del to logon
@@ -171,7 +171,7 @@ goto start2
 cls
 :start2
 ECHO.
-Echo ----CottonCandy 0.1.1 Created by Aidan Patrick Marias----
+Echo ----CottonCandy 0.1.2 Created by Aidan Patrick Marias----
 ECHO 1. Disable Guest and Admin Status
 ECHO 2. Rename Guest and Admin Accounts
 ECHO 3. Disable Requirement Ctrl+Alt+Del to logon
