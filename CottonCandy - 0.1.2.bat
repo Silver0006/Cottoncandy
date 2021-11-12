@@ -26,7 +26,7 @@ ECHO.
 Echo ----CottonCandy 0.1.2 Created by Aidan Patrick Marias----
 ECHO 1. Disable Guest and Admin Status
 ECHO 2. Rename Guest and Admin Accounts
-ECHO 3. Disable Requirement Ctrl+Alt+Del to logon
+ECHO 3. Disable Requirement for Ctrl+Alt+Del to logon
 ECHO 4. Turns on Automatic Updates
 ECHO 5. Set Account Policies
 ECHO 6. Set Audit Policies
@@ -35,6 +35,8 @@ ECHO 8. UAC Consent Prompt Behavior
 ECHO 9. Enable Smart Screen
 ECHO B. Resets Windows Firewall to Default Settings
 ECHO D. Block Microsoft Account Logon
+ECHO G. Change User Password
+ECHO H. Kill User
 ECHO A. All of the above (Proceed with Caution must be Done Separately)
 ECHO C. Go Back
 ECHO E. End
@@ -54,9 +56,14 @@ if '%choice%'=='9' goto ss
 if '%choice%'=='B' goto rfs
 if '%choice%'=='D' goto bml
 if '%choice%'=='F' goto ddls
+if '%choice%'=='G' goto cup
+if '%choice%'=='H' goto ku
+if '%choice%'=='I' goto dontdisplaylastusername
+if '%choice%'=='G' goto end
 if '%choice%'=='A' goto all
 if '%choice%'=='C' goto goback
 if '%choice%'=='E' goto end
+
 
 
 ECHO "%choice%" is not available, try again
@@ -135,6 +142,32 @@ REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Sy
 REG ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\UserSwitch /v Enabled /t REG_DWORD /d 1 /f
 goto start2
 
+:cup
+net user
+ECHO Press C to leave Change Password User
+set choice=
+set /p choice=Type the user to change password.
+if '%choice%'=='C' goto start2
+net user %choice% AegisHolo0006!
+
+goto cup
+
+:ku
+net user
+ECHO Press C to leave Kill User
+set choice=
+set /p choice=Type the user to delete user.
+if '%choice%'=='C' goto start2
+net user %choice% /delete 
+
+goto ku
+
+:dontdisplaylastusername
+REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v dontdisplaylastusername /t REG_DWORD /d 0 /f
+
+
+goto start2
+
 :all
 net user guest /active:no
 net user administrator /active:no
@@ -183,6 +216,8 @@ ECHO 8. UAC Consent Prompt Behavior
 ECHO 9. Enable Smart Screen
 ECHO B. Resets Windows Firewall to Default Settings
 ECHO D. Block Microsoft Account Logon
+ECHO G. Change User Password
+ECHO H. Kill User
 ECHO A. All of the above (Proceed with Caution must be Done Separately)
 ECHO C. Go Back
 ECHO E. End
@@ -202,9 +237,13 @@ if '%choice%'=='9' goto ss
 if '%choice%'=='B' goto rfs
 if '%choice%'=='D' goto bml
 if '%choice%'=='F' goto ddls
+if '%choice%'=='G' goto cup
+if '%choice%'=='H' goto ku
 if '%choice%'=='A' goto all
 if '%choice%'=='C' goto goback
 if '%choice%'=='E' goto end
+if '%choice%'=='G' goto cup
+if '%choice%'=='H' goto ku
 
 ECHO "%choice%" is not available, try again
 ECHO.
@@ -284,6 +323,26 @@ goto start2
 REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v dontdisplaylastusername /t REG_DWORD /d 1 /f
 REG ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\UserSwitch /v Enabled /t REG_DWORD /d 1 /f
 goto start2
+
+:cup
+net user
+ECHO Press C to leave Change Password User
+set choice=
+set /p choice=Type the user to change password.
+if '%choice%'=='C' goto start2
+net user %choice% AegisHolo0006!
+
+goto cup
+
+:ku
+net user
+ECHO Press C to leave Kill User
+set choice=
+set /p choice=Type the user to delete user.
+if '%choice%'=='C' goto start2
+net user %choice% /delete 
+
+goto ku
 
 :all
 net user guest /active:no
