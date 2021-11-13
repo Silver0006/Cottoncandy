@@ -37,6 +37,7 @@ ECHO B. Resets Windows Firewall to Default Settings
 ECHO D. Block Microsoft Account Logon
 ECHO G. Change User Password
 ECHO H. Kill User
+ECHO I. Stops last users to login in from being displayed 
 ECHO A. All of the above (Proceed with Caution must be Done Separately)
 ECHO C. Go Back
 ECHO E. End
@@ -81,7 +82,7 @@ powershell Rename-LocalUser -Name "Administrator" -NewName "Aegis"
 goto start2
 
 :lcad
-REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon /v DisableCAD  /t REG_DWORD /d 1 /f
+REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v DisableCAD /t REG_DWORD /d 0 /f
 goto start2
 
 :au
@@ -94,6 +95,7 @@ net accounts /MINPWLEN:14
 net accounts /MINPWAGE:30
 net accounts /MAXPWAGE:90
 net accounts /UNIQUEPW:5
+
 goto start2
 
 :aup
@@ -173,7 +175,7 @@ net user guest /active:no
 net user administrator /active:no
 powershell Rename-LocalUser -Name "Guest" -NewName "Holo"
 powershell Rename-LocalUser -Name "Administrator" -NewName "Aegis"
-REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon /v DisableCAD  /t REG_DWORD /d 0 /f
+REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v DisableCAD /t REG_DWORD /d 0 /f
 REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU /v AUOptions /t REG_DWORD /d 3 /f
 net accounts /lockoutthreshold:5
 net accounts /MINPWLEN:14
@@ -194,6 +196,8 @@ REG ADD HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\CurrentVersion /v
 REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft /v SmartScreenForTrustedDownloadsEnabled /t REG_DWORD /d 1 /f
 netsh advfirewall reset
 REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v NoConnectedUser /t REG_DWORD /d 3 /f
+REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v dontdisplaylastusername /t REG_DWORD /d 0 /f
+
 
 cls
 
@@ -218,6 +222,7 @@ ECHO B. Resets Windows Firewall to Default Settings
 ECHO D. Block Microsoft Account Logon
 ECHO G. Change User Password
 ECHO H. Kill User
+ECHO I. Stops last users to login in from being displayed 
 ECHO A. All of the above (Proceed with Caution must be Done Separately)
 ECHO C. Go Back
 ECHO E. End
@@ -239,11 +244,11 @@ if '%choice%'=='D' goto bml
 if '%choice%'=='F' goto ddls
 if '%choice%'=='G' goto cup
 if '%choice%'=='H' goto ku
+if '%choice%'=='I' goto dontdisplaylastusername
 if '%choice%'=='A' goto all
 if '%choice%'=='C' goto goback
 if '%choice%'=='E' goto end
-if '%choice%'=='G' goto cup
-if '%choice%'=='H' goto ku
+
 
 ECHO "%choice%" is not available, try again
 ECHO.
@@ -260,7 +265,7 @@ powershell Rename-LocalUser -Name "Administrator" -NewName "Aegis"
 goto start2
 
 :lcad
-REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon /v DisableCAD  /t REG_DWORD /d 1 /f
+REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v DisableCAD /t REG_DWORD /d 0 /f
 goto start2
 
 :au
@@ -344,12 +349,17 @@ net user %choice% /delete
 
 goto ku
 
+:dontdisplaylastusername
+REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v dontdisplaylastusername /t REG_DWORD /d 0 /f
+
+goto start2
+
 :all
 net user guest /active:no
 net user administrator /active:no
 powershell Rename-LocalUser -Name "Guest" -NewName "Holo"
 powershell Rename-LocalUser -Name "Administrator" -NewName "Aegis"
-REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon /v DisableCAD  /t REG_DWORD /d 1 /f
+REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v DisableCAD /t REG_DWORD /d 0 /f
 REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU /v AUOptions /t REG_DWORD /d 3 /f
 net accounts /lockoutthreshold:5
 net accounts /MINPWLEN:14
@@ -375,6 +385,7 @@ netsh advfirewall reset
 REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v NoConnectedUser /t REG_DWORD /d 3 /f
 REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v dontdisplaylastusername /t REG_DWORD /d 1 /f
 REG ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\UserSwitch /v Enabled /t REG_DWORD /d 1 /f
+REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v dontdisplaylastusername /t REG_DWORD /d 0 /f
 
 cls
 
