@@ -6,14 +6,16 @@ ECHO.
 Echo ----CottonCandy 0.1.2 Created by Aidan Patrick Marias----
 ECHO 1. Windows 10
 ECHO 2. Windows Server
-ECHO 3. End
+ECHO 3. Unistall Programs (but it only works sometimes)
+ECHO 4. End
 
 set choice=
 set /p choice=Type the number to load batch file.
 if not '%choice%'=='' set choice=%choice:~0,1%
 if '%choice%'=='1' goto Windows_10
 if '%choice%'=='2' goto Windows_Server
-if '%choice%'=='3' goto End
+if '%choice%'=='3' goto unistallprogram
+if '%choice%'=='4' goto End
 
 ECHO "%choice%" is not available, try again
 ECHO.
@@ -390,6 +392,16 @@ REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Sy
 cls
 
 goto start2
+
+:unistallprogram
+wmic product get Name, Version
+ECHO Press C to goto main menu. Add " to Name
+set choice=
+set /p choice=Type the Program to Delete.
+if '%choice%'=='C' goto start1
+wmic product where name=%choice% call uninstall
+
+goto unistallprogram
 
 :goback
 cls
