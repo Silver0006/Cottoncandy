@@ -40,6 +40,8 @@ ECHO D. Block Microsoft Account Logon
 ECHO G. Change User Password
 ECHO H. Kill User
 ECHO I. Stops last users to login in from being displayed 
+ECHO J. Stops last username from displaying on login
+ECHO K. Stops User from shutdown without being logged in 
 ECHO A. All of the above (Proceed with Caution must be Done Separately)
 ECHO C. Go Back
 ECHO E. End
@@ -62,6 +64,8 @@ if '%choice%'=='F' goto ddls
 if '%choice%'=='G' goto cup
 if '%choice%'=='H' goto ku
 if '%choice%'=='I' goto dontdisplaylastusername
+if '%choice%'=='J' goto dontdisplayusername
+if '%choice%'=='K' goto shutdownwithoutlogon
 if '%choice%'=='G' goto end
 if '%choice%'=='A' goto all
 if '%choice%'=='C' goto goback
@@ -119,8 +123,36 @@ del /S *.mp3
 del /S *.mov
 del /S *.png
 del /S *.jpeg
-goto start2
+del /S *.mkv
+del /S *.wav
+del /S *.movpkg
+del /S *.gif
+del /S *.aif
+del /S *.cda
+del /S *.midi
+del /S *.mid
+del /S *.mpa
+del /S *.ogg
+del /S *.wma
+del /S *.wpl
+del /S *.ai
+del /S *.bmp
+del /S *.ico
+del /S *.ps
+del /S *.psd
+del /S *.svg
+del /S *.tif
+del /S *.tiff
+del /S *.avi
+del /S *.flv
+del /S *.h264
+del /S *.m4v
+del /S *.mpg
+del /S *.mpeg
+del /S *.mmv
 
+
+goto start2
 :uac
 REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v ConsentPromptBehaviorAdmin  /t REG_DWORD /d 1 /f
 REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v ConsentPromptBehaviorUser /t REG_DWORD /d 1 /f
@@ -167,8 +199,15 @@ net user %choice% /delete
 goto ku
 
 :dontdisplaylastusername
-REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v dontdisplaylastusername /t REG_DWORD /d 0 /f
+REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v dontdisplaylastusername /t REG_DWORD /d 1 /f
 
+goto start2
+
+:dontdisplayusername
+REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v DontDisplayUserName /t REG_DWORD /d 1 /f
+
+:shutdownwithoutlogon
+REG ADD HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\ /v  ShutdownWithoutLogon /t REG_DWORD /d 0 /f
 
 goto start2
 
@@ -198,8 +237,9 @@ REG ADD HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\CurrentVersion /v
 REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft /v SmartScreenForTrustedDownloadsEnabled /t REG_DWORD /d 1 /f
 netsh advfirewall reset
 REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v NoConnectedUser /t REG_DWORD /d 3 /f
-REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v dontdisplaylastusername /t REG_DWORD /d 0 /f
-
+REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v dontdisplaylastusername /t REG_DWORD /d 1 /f
+REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v DontDisplayUserName /t REG_DWORD /d 1 /f
+REG ADD HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\ /v  ShutdownWithoutLogon /t REG_DWORD /d 0 /f
 
 cls
 
@@ -225,6 +265,8 @@ ECHO D. Block Microsoft Account Logon
 ECHO G. Change User Password
 ECHO H. Kill User
 ECHO I. Stops last users to login in from being displayed 
+ECHO J. Stops last username from displaying on login
+ECHO J. Stops User from shutdown without being logged in 
 ECHO A. All of the above (Proceed with Caution must be Done Separately)
 ECHO C. Go Back
 ECHO E. End
@@ -247,6 +289,8 @@ if '%choice%'=='F' goto ddls
 if '%choice%'=='G' goto cup
 if '%choice%'=='H' goto ku
 if '%choice%'=='I' goto dontdisplaylastusername
+if '%choice%'=='J' goto dontdisplayusername
+if '%choice%'=='K' goto shutdownwithoutlogon
 if '%choice%'=='A' goto all
 if '%choice%'=='C' goto goback
 if '%choice%'=='E' goto end
@@ -304,6 +348,33 @@ del /S *.mp3
 del /S *.mov
 del /S *.png
 del /S *.jpeg
+del /S *.mkv
+del /S *.wav
+del /S *.movpkg
+del /S *.gif
+del /S *.aif
+del /S *.cda
+del /S *.midi
+del /S *.mid
+del /S *.mpa
+del /S *.ogg
+del /S *.wma
+del /S *.wpl
+del /S *.ai
+del /S *.bmp
+del /S *.ico
+del /S *.ps
+del /S *.psd
+del /S *.svg
+del /S *.tif
+del /S *.tiff
+del /S *.avi
+del /S *.flv
+del /S *.h264
+del /S *.m4v
+del /S *.mpg
+del /S *.mpeg
+del /S *.mmv
 goto start2
 
 :uac
@@ -356,6 +427,16 @@ REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Sy
 
 goto start2
 
+:dontdisplayusername
+REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v DontDisplayUserName /t REG_DWORD /d 1 /f
+
+goto start2
+
+:shutdownwithoutlogon
+REG ADD HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\ /v  ShutdownWithoutLogon /t REG_DWORD /d 0 /f
+
+goto start2
+
 :all
 net user guest /active:no
 net user administrator /active:no
@@ -387,13 +468,22 @@ netsh advfirewall reset
 REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v NoConnectedUser /t REG_DWORD /d 3 /f
 REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v dontdisplaylastusername /t REG_DWORD /d 1 /f
 REG ADD HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\UserSwitch /v Enabled /t REG_DWORD /d 1 /f
-REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v dontdisplaylastusername /t REG_DWORD /d 0 /f
+REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v dontdisplaylastusername /t REG_DWORD /d 1 /f
+REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v DontDisplayUserName /t REG_DWORD /d 1 /f
+REG ADD HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\ /v  ShutdownWithoutLogon /t REG_DWORD /d 0 /f
 
 cls
 
 goto start2
 
+:Extra
+cls
+set choice=
+set /p choice=Type the number to load batch file. Listed in recommended order.
+if not '%choice%'=='' set choice=%choice:~0,1%
+if '%choice%'=='1' goto unistallprogram
 :unistallprogram
+cls
 wmic product get Name, Version
 ECHO Press C to goto main menu. Add " to Name
 set choice=
