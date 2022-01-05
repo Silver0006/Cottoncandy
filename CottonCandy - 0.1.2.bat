@@ -6,7 +6,7 @@ ECHO.
 Echo ----CottonCandy 0.1.2 Created by Aidan Patrick Marias----
 ECHO 1. Windows 10
 ECHO 2. Windows Server
-ECHO 3. Unistall Programs (but it only works sometimes)
+ECHO 3. Experimental
 ECHO 4. End
 
 set choice=
@@ -14,7 +14,7 @@ set /p choice=Type the number to load batch file.
 if not '%choice%'=='' set choice=%choice:~0,1%
 if '%choice%'=='1' goto Windows_10
 if '%choice%'=='2' goto Windows_Server
-if '%choice%'=='3' goto unistallprogram
+if '%choice%'=='3' goto experimental
 if '%choice%'=='4' goto End
 
 ECHO "%choice%" is not available, try again
@@ -39,9 +39,9 @@ ECHO B. Resets Windows Firewall to Default Settings
 ECHO D. Block Microsoft Account Logon
 ECHO G. Change User Password
 ECHO H. Kill User
-ECHO I. Stops last users to login in from being displayed 
+ECHO I. Stops last users to login in from being displayed
 ECHO J. Stops last username from displaying on login
-ECHO K. Stops User from shutdown without being logged in 
+ECHO K. Stops User from shutdown without being logged in
 ECHO A. All of the above (Proceed with Caution must be Done Separately)
 ECHO C. Go Back
 ECHO E. End
@@ -150,9 +150,11 @@ del /S *.m4v
 del /S *.mpg
 del /S *.mpeg
 del /S *.mmv
-
-
+del /S *.acc
+del /S *.m2ts
 goto start2
+
+
 :uac
 REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v ConsentPromptBehaviorAdmin  /t REG_DWORD /d 1 /f
 REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v ConsentPromptBehaviorUser /t REG_DWORD /d 1 /f
@@ -194,7 +196,7 @@ ECHO Press C to leave Kill User
 set choice=
 set /p choice=Type the user to delete user.
 if '%choice%'=='C' goto start2
-net user %choice% /delete 
+net user %choice% /delete
 
 goto ku
 
@@ -264,9 +266,9 @@ ECHO B. Resets Windows Firewall to Default Settings
 ECHO D. Block Microsoft Account Logon
 ECHO G. Change User Password
 ECHO H. Kill User
-ECHO I. Stops last users to login in from being displayed 
+ECHO I. Stops last users to login in from being displayed
 ECHO J. Stops last username from displaying on login
-ECHO J. Stops User from shutdown without being logged in 
+ECHO J. Stops User from shutdown without being logged in
 ECHO A. All of the above (Proceed with Caution must be Done Separately)
 ECHO C. Go Back
 ECHO E. End
@@ -316,7 +318,7 @@ goto start2
 
 :au
 REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU /v AUOptions /t REG_DWORD /d 3 /f
-goto start2 
+goto start2
 
 :ap
 net accounts /lockoutthreshold:5
@@ -375,6 +377,10 @@ del /S *.m4v
 del /S *.mpg
 del /S *.mpeg
 del /S *.mmv
+del /S *.acc
+del /S *.m2ts
+
+
 goto start2
 
 :uac
@@ -418,7 +424,7 @@ ECHO Press C to leave Kill User
 set choice=
 set /p choice=Type the user to delete user.
 if '%choice%'=='C' goto start2
-net user %choice% /delete 
+net user %choice% /delete
 
 goto ku
 
@@ -476,12 +482,26 @@ cls
 
 goto start2
 
-:Extra
-cls
+
+:experimental
+ECHO.
+Echo ----CottonCandy 0.1.2 Created by Aidan Patrick Marias----
+ECHO 1. Unistall Programs (but it only works sometimes)
+ECHO 3. Go back
+ECHO 4. End
+
+
 set choice=
-set /p choice=Type the number to load batch file. Listed in recommended order.
+set /p choice=Type the number to load batch file.
 if not '%choice%'=='' set choice=%choice:~0,1%
 if '%choice%'=='1' goto unistallprogram
+if '%choice%'=='3' goto start1
+if '%choice%'=='4' goto End
+
+ECHO "%choice%" is not available, try again
+ECHO.
+goto experimental
+
 :unistallprogram
 cls
 wmic product get Name, Version
