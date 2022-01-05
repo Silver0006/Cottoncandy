@@ -3,7 +3,7 @@ c
 cls
 :start1
 ECHO.
-Echo ----CottonCandy 0.1.2 Created by Aidan Patrick Marias----
+Echo ----CottonCandy 0.1.3 Created by Aidan Patrick Marias----
 ECHO 1. Windows 10
 ECHO 2. Windows Server
 ECHO 3. Experimental
@@ -25,7 +25,7 @@ goto start1
 cls
 :start2
 ECHO.
-Echo ----CottonCandy 0.1.2 Created by Aidan Patrick Marias----
+Echo ----CottonCandy 0.1.3 Created by Aidan Patrick Marias----
 ECHO 1. Disable Guest and Admin Status
 ECHO 2. Rename Guest and Admin Accounts
 ECHO 3. Disable Requirement for Ctrl+Alt+Del to logon
@@ -42,6 +42,8 @@ ECHO H. Kill User
 ECHO I. Stops last users to login in from being displayed
 ECHO J. Stops last username from displaying on login
 ECHO K. Stops User from shutdown without being logged in
+ECHO L. Kill services
+ECHO M. Start services
 ECHO A. All of the above (Proceed with Caution must be Done Separately)
 ECHO C. Go Back
 ECHO E. End
@@ -66,7 +68,8 @@ if '%choice%'=='H' goto ku
 if '%choice%'=='I' goto dontdisplaylastusername
 if '%choice%'=='J' goto dontdisplayusername
 if '%choice%'=='K' goto shutdownwithoutlogon
-if '%choice%'=='G' goto end
+if '%choice%'=='L' goto killservice
+if '%choice%'=='M' goto startservice
 if '%choice%'=='A' goto all
 if '%choice%'=='C' goto goback
 if '%choice%'=='E' goto end
@@ -208,8 +211,67 @@ goto start2
 :dontdisplayusername
 REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v DontDisplayUserName /t REG_DWORD /d 1 /f
 
+goto start2
 :shutdownwithoutlogon
 REG ADD HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\ /v  ShutdownWithoutLogon /t REG_DWORD /d 0 /f
+
+goto start2
+
+:killservice
+net stop "BcastDVRUserService"
+net stop "BcastDVRUserService_8e1b8"
+net stop "BTAGService"
+net stop "bthserv"
+net stop "Browser"
+net stop "MapsBroker"
+net stop "Ifsvc"
+net stop "IISADMIN"
+net stop "irmon"
+net stop "SharedAccess"
+net stop "lltdsvc"
+net stop "LxssManager"
+net stop "FTPSVC"
+net stop "MSiSCSI"
+net stop "sshd"
+net stop "PNRPsvc"
+net stop "p2psvc"
+net stop "p2pimsvc
+net stop "PNRPAutoReg
+net stop "wercplsupport"
+net stop "RasAuto"
+net stop "SessionEnv"
+net stop "TermService"
+net stop "UmRdpService"
+net stop "RpcLocator"
+net stop "RemoteRegistry"
+net stop "RemoteAccess"
+net stop "LanmanServer"
+net stop "simptcp"
+net stop "SNMP"
+net stop "sacsvr"
+net stop "SSDPSRV"
+net stop "upnphost"
+net stop "WMSvc"
+net stop "WerSvc"
+net stop "Wecsvc"
+net stop "WMPNetworkSvc"
+net stop "icssvc"
+net stop "WpnService"
+net stop "PushToInstall"
+net stop "WS-Management"
+net stop "W3SVC"
+net stop "XboxGipSvc"
+net stop "XblAuthManager"
+net stop "XblGameSave"
+net stop "XboxNetApiSvc"
+
+
+goto start2
+
+:startservices
+net start "AudioEndpointBuilder"
+net start "Audiosrv"
+
 
 goto start2
 
@@ -242,6 +304,54 @@ REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Sy
 REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v dontdisplaylastusername /t REG_DWORD /d 1 /f
 REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v DontDisplayUserName /t REG_DWORD /d 1 /f
 REG ADD HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\ /v  ShutdownWithoutLogon /t REG_DWORD /d 0 /f
+net stop "BcastDVRUserService"
+net stop "BcastDVRUserService_8e1b8"
+net stop "BTAGService"
+net stop "bthserv"
+net stop "Browser"
+net stop "MapsBroker"
+net stop "Ifsvc"
+net stop "IISADMIN"
+net stop "irmon"
+net stop "SharedAccess"
+net stop "lltdsvc"
+net stop "LxssManager"
+net stop "FTPSVC"
+net stop "MSiSCSI"
+net stop "sshd"
+net stop "PNRPsvc"
+net stop "p2psvc"
+net stop "p2pimsvc
+net stop "PNRPAutoReg
+net stop "wercplsupport"
+net stop "RasAuto"
+net stop "SessionEnv"
+net stop "TermService"
+net stop "UmRdpService"
+net stop "RpcLocator"
+net stop "RemoteRegistry"
+net stop "RemoteAccess"
+net stop "LanmanServer"
+net stop "simptcp"
+net stop "SNMP"
+net stop "sacsvr"
+net stop "SSDPSRV"
+net stop "upnphost"
+net stop "WMSvc"
+net stop "WerSvc"
+net stop "Wecsvc"
+net stop "WMPNetworkSvc"
+net stop "icssvc"
+net stop "WpnService"
+net stop "PushToInstall"
+net stop "WS-Management"
+net stop "W3SVC"
+net stop "XboxGipSvc"
+net stop "XblAuthManager"
+net stop "XblGameSave"
+net stop "XboxNetApiSvc"
+net start "AudioEndpointBuilder"
+net start "Audiosrv"
 
 cls
 
@@ -252,7 +362,7 @@ goto start2
 cls
 :start2
 ECHO.
-Echo ----CottonCandy 0.1.2 Created by Aidan Patrick Marias----
+Echo ----CottonCandy 0.1.3 Created by Aidan Patrick Marias----
 ECHO 1. Disable Guest and Admin Status
 ECHO 2. Rename Guest and Admin Accounts
 ECHO 3. Disable Requirement Ctrl+Alt+Del to logon
@@ -268,7 +378,7 @@ ECHO G. Change User Password
 ECHO H. Kill User
 ECHO I. Stops last users to login in from being displayed
 ECHO J. Stops last username from displaying on login
-ECHO J. Stops User from shutdown without being logged in
+ECHO K. Stops User from shutdown without being logged in
 ECHO A. All of the above (Proceed with Caution must be Done Separately)
 ECHO C. Go Back
 ECHO E. End
@@ -485,7 +595,7 @@ goto start2
 
 :experimental
 ECHO.
-Echo ----CottonCandy 0.1.2 Created by Aidan Patrick Marias----
+Echo ----CottonCandy 0.1.3 Created by Aidan Patrick Marias----
 ECHO 1. Unistall Programs (but it only works sometimes)
 ECHO 3. Go back
 ECHO 4. End
