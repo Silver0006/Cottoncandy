@@ -1,5 +1,3 @@
-
-
 @ECHO off
 c
 cls
@@ -46,7 +44,7 @@ ECHO J. Stops last username from displaying on login
 ECHO K. Stops User from shutdown without being logged in
 ECHO L. Kill services
 ECHO M. Start services (Proceed with Caution, may cause cmd to close)
-ECHO N. Disable services
+ECHO N. Disable services 
 ECHO A. All of the above (Proceed with Caution must be Done Separately)
 ECHO C. Go Back
 ECHO E. End
@@ -273,7 +271,7 @@ net stop "XboxNetApiSvc" /y
 goto start2
 
 :startservices
-net start "AudioEndpointBuilder"&net start "Audiosrv"
+c
 
 goto start2
 
@@ -356,52 +354,145 @@ REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Sy
 REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v dontdisplaylastusername /t REG_DWORD /d 1 /f
 REG ADD HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v DontDisplayUserName /t REG_DWORD /d 1 /f
 REG ADD HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\ /v  ShutdownWithoutLogon /t REG_DWORD /d 0 /f
-net stop "BcastDVRUserService"
-net stop "BcastDVRUserService_8e1b8"
-net stop "BTAGService"
-net stop "bthserv"
-net stop "Browser"
-net stop "MapsBroker"
-net stop "Ifsvc"
-net stop "IISADMIN"
-net stop "irmon"
-net stop "SharedAccess"
-net stop "lltdsvc"
-net stop "LxssManager"
-net stop "FTPSVC"
-net stop "MSiSCSI"
-net stop "sshd"
-net stop "PNRPsvc"
-net stop "p2psvc"
-net stop "p2pimsvc
-net stop "PNRPAutoReg
-net stop "wercplsupport"
-net stop "RasAuto"
-net stop "SessionEnv"
-net stop "TermService"
-net stop "UmRdpService"
-net stop "RpcLocator"
-net stop "RemoteRegistry"
-net stop "RemoteAccess"
-net stop "LanmanServer"
-net stop "simptcp"
-net stop "SNMP"
-net stop "sacsvr"
-net stop "SSDPSRV"
-net stop "upnphost"
-net stop "WMSvc"
-net stop "WerSvc"
-net stop "Wecsvc"
-net stop "WMPNetworkSvc"
-net stop "icssvc"
-net stop "WpnService"
-net stop "PushToInstall"
-net stop "WS-Management"
-net stop "W3SVC"
-net stop "XboxGipSvc"
-net stop "XblAuthManager"
-net stop "XblGameSave"
-net stop "XboxNetApiSvc"
+net stop "BcastDVRUserService" /y
+net stop "BcastDVRUserService_8e1b8" /y
+net stop "BTAGService" /y 
+net stop "bthserv" /y
+net stop "Browser" /y
+net stop "MapsBroker" /y
+net stop "Ifsvc" /y
+net stop "IISADMIN" /y
+net stop "irmon" /y
+net stop "SharedAccess" /y
+net stop "lltdsvc" /y
+net stop "LxssManager" /y
+net stop "FTPSVC" /y
+net stop "MSiSCSI" /y
+net stop "sshd" /y
+net stop "PNRPsvc" /y
+net stop "p2psvc" /y
+net stop "p2pimsvc" /y 
+net stop "PNRPAutoReg" /y
+net stop "wercplsupport" /y
+net stop "RasAuto" /y
+net stop "SessionEnv" /y
+net stop "TermService" /y
+net stop "UmRdpService" /y
+net stop "RpcLocator" /y
+net stop "RemoteRegistry" /y
+net stop "RemoteAccess" /y
+net stop "LanmanServer" /y
+net stop "simptcp" /y
+net stop "SNMP" /y
+net stop "sacsvr" /y
+net stop "SSDPSRV" /y
+net stop "upnphost" /y
+net stop "WMSvc" /y
+net stop "WerSvc" /y
+net stop "Wecsvc" /y
+net stop "WMPNetworkSvc" /y
+net stop "icssvc" /y
+net stop "WpnService" /y
+net stop "PushToInstall" /y
+net stop "WS-Management" /y
+net stop "W3SVC" /y
+net stop "XboxGipSvc" /y
+net stop "XblAuthManager" /y
+net stop "XblGameSave" /y
+net stop "XboxNetApiSvc" /y
+sc config "BcastDVRUserService" start= disabled
+sc config "BcastDVRUserService_8e1b8" start= disabled
+sc config "BTAGService" start= disabled
+sc config "bthserv" start= disabled
+sc config "Browser" start= disabled
+sc config "MapsBroker" start= disabled
+sc config "Ifsvc" start= disabled
+sc config "IISADMIN" start= disabled
+sc config "irmon" start= disabled
+sc config "SharedAccess" start= disabled
+sc config "lltdsvc" start= disabled
+sc config "LxssManager" start= disabled
+sc config "FTPSVC" start= disabled
+sc config "MSiSCSI" start= disabled
+sc config "sshd" start= disabled
+sc config "PNRPsvc" start= disabled
+sc config "p2psvc" start= disabled
+sc config "p2pimsvc" start= disabled
+sc config "PNRPAutoReg" start= disabled
+sc config "wercplsupport" start= disabled
+sc config "RasAuto" start= disabled
+sc config "SessionEnv" start= disabled
+sc config "TermService" start= disabled
+sc config "UmRdpService" start= disabled
+sc config "RpcLocator" start= disabled
+sc config "RemoteRegistry" start= disabled
+sc config "RemoteAccess" start= disabled
+sc config "LanmanServer" start= disabled
+sc config "simptcp" start= disabled
+sc config "SNMP" start= disabled
+sc config "sacsvr" start= disabled
+sc config "SSDPSRV" start= disabled
+sc config "upnphost" start= disabled
+sc config "WMSvc" start= disabled
+sc config "WerSvc" start= disabled
+sc config "Wecsvc" start= disabled
+sc config "WMPNetworkSvc" start= disabled
+sc config "icssvc" start= disabled
+sc config "WpnService" start= disabled
+sc config "PushToInstall" start= disabled
+sc config "WS-Management" start= disabled
+sc config "W3SVC" start= disabled
+sc config "XboxGipSvc" start= disabled
+sc config "XblAuthManager" start= disabled
+sc config "XblGameSave" start= disabled
+sc config "XboxNetApiSvc" start= disabled
+
+sc config "BcastDVRUserService" start= disabled
+sc config "BcastDVRUserService_8e1b8" start= disabled
+sc config "BTAGService" start= disabled
+sc config "bthserv" start= disabled
+sc config "Browser" start= disabled
+sc config "MapsBroker" start= disabled
+sc config "Ifsvc" start= disabled
+sc config "IISADMIN" start= disabled
+sc config "irmon" start= disabled
+sc config "SharedAccess" start= disabled
+sc config "lltdsvc" start= disabled
+sc config "LxssManager" start= disabled
+sc config "FTPSVC" start= disabled
+sc config "MSiSCSI" start= disabled
+sc config "sshd" start= disabled
+sc config "PNRPsvc" start= disabled
+sc config "p2psvc" start= disabled
+sc config "p2pimsvc" start= disabled
+sc config "PNRPAutoReg" start= disabled
+sc config "wercplsupport" start= disabled
+sc config "RasAuto" start= disabled
+sc config "SessionEnv" start= disabled
+sc config "TermService" start= disabled
+sc config "UmRdpService" start= disabled
+sc config "RpcLocator" start= disabled
+sc config "RemoteRegistry" start= disabled
+sc config "RemoteAccess" start= disabled
+sc config "LanmanServer" start= disabled
+sc config "simptcp" start= disabled
+sc config "SNMP" start= disabled
+sc config "sacsvr" start= disabled
+sc config "SSDPSRV" start= disabled
+sc config "upnphost" start= disabled
+sc config "WMSvc" start= disabled
+sc config "WerSvc" start= disabled
+sc config "Wecsvc" start= disabled
+sc config "WMPNetworkSvc" start= disabled
+sc config "icssvc" start= disabled
+sc config "WpnService" start= disabled
+sc config "PushToInstall" start= disabled
+sc config "WS-Management" start= disabled
+sc config "W3SVC" start= disabled
+sc config "XboxGipSvc" start= disabled
+sc config "XblAuthManager" start= disabled
+sc config "XblGameSave" start= disabled
+sc config "XboxNetApiSvc" start= disabled
 
 
 cls
