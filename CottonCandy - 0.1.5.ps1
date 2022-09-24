@@ -109,9 +109,13 @@ do
     Clear-Host
     Write-Host "================ $Subtitle1 ================"
     
-    Write-Host "1. Show Disabled Features"
-    Write-Host "2: Enable Basic Admin Tools"
-    Write-Host "3: Press '3' for this option."
+    Write-Host "1. Disable Guest and Admin Accounts"
+    Write-Host "2: Rename Guest and Admin Accounts"
+    Write-Host "3: Resets Windows Firewall to Default Settings"
+    Write-Host "4: "
+    Write-Host "5: "
+    Write-Host "6: "
+    Write-Host "7: "
     Write-Host "B: Press 'B' to Return to Menu."
     Write-Host "Q: Press 'Q' to quit."
 }
@@ -121,7 +125,16 @@ do
     $selection = Read-Host "Please make a selection"
     switch ($selection)
     { "1" {
-
+    Disable-LocalUser -Name "Guest"
+    Disable-LocalUser -Name "Administrator"
+    } "2" {
+    Rename-LocalUser -Name "administrator" -NewName "Aegis"
+    Rename-LocalUser -Name "guest" -NewName "Holo"
+    } "3" {
+    (New-Object -ComObject HNetCfg.FwPolicy2).RestoreLocalFirewallDefaults()
+    } "4" {
+    set-location -path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+    New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "NoConnectedUser" -Value ”3”  -PropertyType "REG_DWORD"
     }
     }
     pause
