@@ -41,8 +41,7 @@ do
     '1' {
     Get-WindowsOptionalFeature –Online | Where-Object {$_. State –eq “Disabled”} 
     } '2' {
-    Enable-WindowsOptionalFeature –FeatureName "Windows-Defender-ApplicationGuard" -All -Online
-    Enable-WindowsOptionalFeature –FeatureName "Name" -All -Online 
+    Enable-WindowsOptionalFeature -FeatureName "Windows-Defender-ApplicationGuard" -Online
     } '3' {
       'You chose option #3'
     } 'b' {
@@ -65,8 +64,12 @@ do
     Write-Host "1. Install Chocolatey"
     Write-Host "2: Update Chocolatey"
     Write-Host "3: Uninstall Chocolatey"
-    Write-Host "B: Press 'B' to Return to Menu."
-    Write-Host "Q: Press 'Q' to quit."
+    Write-Host "4: Update All Packages"
+    Write-Host "5: Install Firefox"
+    Write-Host "6: Install Notepad++"
+    Write-Host "7: Malwarebytes" 
+    Write-Host "B: Press B to Return to Menu."
+    Write-Host "Q: Press Q to quit."
 }
 do
  {
@@ -74,13 +77,23 @@ do
     $selection = Read-Host "Please make a selection"
     switch ($selection)
     {
-    '1' {
+    "1" {
     Set-ExecutionPolicy Bypass -Scope Process -Force; `
-  iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-    } '2' {
+  iex ((New-Object System.Net.WebClient).DownloadString("https://chocolatey.org/install.ps1"))
+    } "2" {
     choco upgrade chocolatey -y
-    } '3' {
+    } "3" {
     choco uninstall chocolatey
+    } "4" {
+    choco upgrade all
+    } "5" {
+    choco install firefox
+    } "6" {
+    choco install notepadplusplus.install
+    } "7" {
+    choco install malwarebytes
+    } "8" {
+    choco install 7zip
     } 'b' {
     if ($selection = 'b') {return $start}
     }
