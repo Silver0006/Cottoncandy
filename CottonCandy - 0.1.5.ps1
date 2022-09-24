@@ -67,7 +67,7 @@ do
     Write-Host "4: Update All Packages"
     Write-Host "5: Install Firefox"
     Write-Host "6: Install Notepad++"
-    Write-Host "7: Malwarebytes" 
+    Write-Host "7: Install Malwarebytes" 
     Write-Host "B: Press B to Return to Menu."
     Write-Host "Q: Press Q to quit."
 }
@@ -102,7 +102,31 @@ do
  }
  until ($selection -eq 'q')
     } '3' {
-      'You chose option #3'
+    $settings = function Show-Menu {
+    
+        $Subtitle1 = 'Settings'
+   
+    Clear-Host
+    Write-Host "================ $Subtitle1 ================"
+    
+    Write-Host "1. Show Disabled Features"
+    Write-Host "2: Enable Basic Admin Tools"
+    Write-Host "3: Press '3' for this option."
+    Write-Host "B: Press 'B' to Return to Menu."
+    Write-Host "Q: Press 'Q' to quit."
+}
+do
+ {
+    Show-Menu
+    $selection = Read-Host "Please make a selection"
+    switch ($selection)
+    { "1" {
+
+    }
+    }
+    pause
+ }
+ until ($selection -eq 'q')
     }
     }
     pause
