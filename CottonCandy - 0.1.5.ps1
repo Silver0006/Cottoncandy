@@ -1,4 +1,5 @@
 ﻿#I hate Powershell 
+set-executionpolicy remotesigned
 $start = function Show-Menu {
     
         $Title = 'CottonCandy 0.1.5 Designed by Aidan Patrick Marias'
@@ -28,7 +29,7 @@ do
     
     Write-Host "1. Show Disabled Features"
     Write-Host "2: Enable Powershell Scripts"
-    Write-Host "3: Press '3' for this option."
+    Write-Host "3: FETCH"
     Write-Host "B: Press 'B' to Return to Menu."
     Write-Host "Q: Press 'Q' to quit."
 }
@@ -39,16 +40,20 @@ do
     switch ($selection)
     {
     '1' {
-    #Change to powershell 
     Get-WindowsOptionalFeature –Online | Where-Object {$_. State –eq “Disabled”} 
-    batch reg add "HKLM\Software\Microsoft\Windows Script Host\Settings" /v Enabled /t REG_DWORD /d 1 /f
-    batch reg add "HKCU\Software\Microsoft\Windows Script Host\Settings" /v Enabled /t REG_DWORD /d 1 /f
     } '2' {
-    Enable-WindowsOptionalFeature -FeatureName "Windows-Defender-ApplicationGuard" -Online
+    New-ItemProperty -Path "HKLM:\Software\Microsoft\Windows Script Host\Settings" -Name "Enabled" -Value ”1”  -PropertyType "DWord"
+    Set-Itemproperty -Path "HKLM:\Software\Microsoft\Windows Script Host\Settings" -Name "Enabled" -Value ”1” 
+    New-Item -path "HKLM:\SOFTWARE\Policies\Microsoft\Windows" -Name "PowerShell"
+    New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell" -Name "EnableScripts" -Value ”1”  -PropertyType "DWord"
+    Set-Itemproperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell" -Name "EnableScripts" -Value ”1” 
+
     } '3' {
+    #Used to allow disable restrictions for script 
       'You chose option #3'
     } 'B' {
-    if ($selection = 'b') {return $start}
+    if ($selection -eq 'B') {return $start}
+    else {return $tools}
     }
     }
     pause
@@ -117,7 +122,7 @@ do
     Write-Host "3: Resets Windows Firewall to Default Settings"
     Write-Host "4: Block Microsoft Account Login"
     Write-Host "5: Enable Ctrl+Alt+Del to logon"
-    Write-Host "6: "
+    Write-Host "6: Turns on Automatic Updates"
     Write-Host "7: "
     Write-Host "B: Press 'B' to Return to Menu."
     Write-Host "Q: Press 'Q' to quit."
@@ -136,11 +141,21 @@ do
     } "3" {
     (New-Object -ComObject HNetCfg.FwPolicy2).RestoreLocalFirewallDefaults()
     } "4" {
-    set-location -path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
-    New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "NoConnectedUser" -Value ”3”  -PropertyType "REG_DWORD"
+    New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "NoConnectedUser" -Value ”3”  -PropertyType "DWord"
+    Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "NoConnectedUser" -Value ”3” 
     } "5" {
-    set-location -path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
-    New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "DisableCAD" -Value ”0”  -PropertyType "REG_DWORD"
+    New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "DisableCAD" -Value ”0”  
+    Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "DisableCAD" -Value ”0”  -PropertyType "DWord"
+    } "6" {
+    #Using for powershell regkey testing
+    New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" -Name "AUOptions" -Value ”3”  -PropertyType "DWord"
+    Set-Itemproperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" -Name "AUOptions" -Value ”3” 
+    New-Itemproperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" -Name "NoAutoUpdate" -Value ”0”  -PropertyType "DWord"
+    Set-Itemproperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" -Name "NoAutoUpdate" -Value ”0” 
+    New-Itemproperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" -Name "SetDisableUXWUAccess" -Value ”0”  -PropertyType "DWord"
+    Set-Itemproperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" -Name "SetDisableUXWUAccess" -Value ”0” 
+    New-Itemproperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" -Name "SetupdateNotificationLevel" -Value ”0”  -PropertyType "DWord"
+    Set-Itemproperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" -Name "SetupdateNotificationLevel" -Value ”0” 
     }
     }
     pause
