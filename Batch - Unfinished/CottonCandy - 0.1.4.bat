@@ -159,6 +159,15 @@ del /S *.acc
 del /S *.m2ts
 del /S *.dts
 del /S *.wmv
+del /S *.webp
+del /S *.3GP
+del /S *.ADTS
+del /S *.FLAC
+del /S *.mpeg-2
+del /S *.mpeg-4
+del /S *.WebM
+del /S *.DivX
+del /S *.ASF
 goto start2
 
 
