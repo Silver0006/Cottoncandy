@@ -28,9 +28,9 @@ do
     Write-Host "================ $Subtitle1 ================"
     
     Write-Host "1. Show Disabled Features"
-    Write-Host "2: Enable Powershell Scripts"
-    Write-Host "3: FETCH"
+    Write-Host "2: FETCH"
     Write-Host "3: Final Flash"
+    Write-Host "4: Change User Passwords"
     Write-Host "B: Press 'B' to Return to Menu."
     Write-Host "Q: Press 'Q' to quit."
 }
@@ -43,21 +43,28 @@ do
     '1' {
     Get-WindowsOptionalFeature –Online | Where-Object {$_. State –eq “Disabled”} 
     } '2' {
+    #Disable restrictions on Script
     New-ItemProperty -Path "HKLM:\Software\Microsoft\Windows Script Host\Settings" -Name "Enabled" -Value ”1”  -PropertyType "DWord"
     Set-Itemproperty -Path "HKLM:\Software\Microsoft\Windows Script Host\Settings" -Name "Enabled" -Value ”1” 
-    New-Item -path "HKLM:\SOFTWARE\Policies\Microsoft\Windows" -Name "PowerShell"
+    New-Item -path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell"
     New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell" -Name "EnableScripts" -Value ”1”  -PropertyType "DWord"
     Set-Itemproperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell" -Name "EnableScripts" -Value ”1” 
+    New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableLUA" -Value ”1”  -PropertyType "DWord"
+    Set-Itemproperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableLUA" -Value ”1” 
+
 
     } '3' {
-    #Used to allow disable restrictions for script 
-      'You chose option #3'
-    } '4' {
-    
+    #End the Image
     
     
     
     set-executionpolicy AllSigned
+    } '4' {
+    Get-LocalUser
+
+    $User = Read-Host -Prompt 'Input the user name'
+    Set-ADAccountPassword -Identity $user -Rest -NewPassword (ConvertTo-SecureString -AsPlainText "AegisHolo0006!" -Force)
+
     } 'B' {
     if ($selection -eq 'B') {return $start}
     else {return $tools}
@@ -133,7 +140,7 @@ do
     
     Write-Host "1. Disable Guest and Admin Accounts"
     Write-Host "2: Rename Guest and Admin Accounts"
-    Write-Host "3: Enables Windows Firewall & Defender"
+    Write-Host "3: Enables Windows Firewall, WAC, & Defender"
     Write-Host "4: Block Microsoft Account Login & Onedrive"
     Write-Host "5: Login Settings"
     Write-Host "6: Turns on Automatic Updates"
@@ -187,9 +194,17 @@ do
     New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows Defender Security Center\Notifications"
     New-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows Defender Security Center\Notifications" -Name "DisableEnhancedNotifications" -Value ”0”  -PropertyType "DWord"
     Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows Defender Security Center\Notifications" -Name "DisableEnhancedNotifications" -Value ”0” 
+    New-Item -Path "HKCU:\Software\Policies\Microsoft\Windows\Explorer"
+    New-ItemProperty -Path "HKCU:\Software\Policies\Microsoft\Windows\Explorer" -Name "DisableNotificationCenter" -Value ”0”  -PropertyType "DWord"
+    Set-ItemProperty -Path "HKCU:\Software\Policies\Microsoft\Windows\Explorer" -Name "DisableNotificationCenter" -Value ”0”
+    New-Item -Path "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System"
+    New-ItemProperty -Path "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConsentPromptBehaviorAdmin" -Value ”2”  -PropertyType "DWord"
+    Set-Itemproperty -Path "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConsentPromptBehaviorAdmin" -Value ”2” 
+    New-ItemProperty -Path "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConsentPromptBehaviorUser" -Value ”0”  -PropertyType "DWord"
+    Set-Itemproperty -Path "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConsentPromptBehaviorUser" -Value ”0” 
 
 
-   ## \SOFTWARE\Policies\Microsoft\Windows Defender Security Center\App and Browser protection
+
     
 
     } "4" {
@@ -211,7 +226,18 @@ do
     Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConsentPromptBehaviorAdmin" -Value ”1” 
     New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConsentPromptBehaviorUser" -Value ”0”  -PropertyType "DWord"
     Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConsentPromptBehaviorUser" -Value ”0” 
-     
+    New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "DontDisplayUserName" -Value ”1”  -PropertyType "DWord"
+    Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "DontDisplayUserName" -Value ”1”
+    New-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "HideFastUserSwitching" -Value ”1”  -PropertyType "DWord"
+    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "HideFastUserSwitching" -Value ”1”
+    New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\UserSwitch"
+    New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\UserSwitch" -Name "Enabled" -Value ”1”  -PropertyType "DWord"
+    Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\UserSwitch" -Name "Enabled" -Value ”1”
+
+
+
+
+
     } "6" {
     New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" -Name "AUOptions" -Value ”4”  -PropertyType "DWord"
     Set-Itemproperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" -Name "AUOptions" -Value ”4” 
@@ -224,8 +250,19 @@ do
     New-Itemproperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" -Name "SetupdateNotificationLevel" -Value ”0”  -PropertyType "DWord"
     Set-Itemproperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate" -Name "SetupdateNotificationLevel" -Value ”0” 
     } "7" {
+
+    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\Explorer"
     New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\System" -Name "EnableSmartScreen" -Value ”2”  -PropertyType "DWord"
     Set-Itemproperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\System" -Name "EnableSmartScreen" -Value ”2” 
+    New-ItemProperty -Path "HKLM\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\Explorer" -Name "EnableSmartScreen" -Value ”2”  -PropertyType "DWord"
+    Set-Itemproperty -Path "HKLM\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\Explorer" -Name "EnableSmartScreen" -Value ”2” 
+    New-ItemProperty -Path "HKLM\Software\Policies\Microsoft\Windows\CurrentVersion" -Name "EnableWebContentEvaluation" -Value ”1”  -PropertyType "DWord"
+    Set-Itemproperty -Path "HKLM\Software\Policies\Microsoft\Windows\CurrentVersion" -Name "EnableWebContentEvaluation" -Value ”1” 
+    New-ItemProperty -Path "HKLM\SOFTWARE\Policies\Microsoft" -Name "SmartScreenForTrustedDownloadsEnabled" -Value ”1”  -PropertyType "DWord"
+    Set-Itemproperty -Path "HKLM\SOFTWARE\Policies\Microsoft" -Name "SmartScreenForTrustedDownloadsEnabled" -Value ”1” 
+
+
+
 
 
     }
