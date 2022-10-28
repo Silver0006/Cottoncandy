@@ -55,15 +55,21 @@ do
 
     } '3' {
     #End the Image
-    
-    
-    
+    New-ItemProperty -Path "HKLM:\Software\Microsoft\Windows Script Host\Settings" -Name "Enabled" -Value ”0”  -PropertyType "DWord"
+    Set-Itemproperty -Path "HKLM:\Software\Microsoft\Windows Script Host\Settings" -Name "Enabled" -Value ”0” 
+    New-Item -path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell"
+    New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell" -Name "EnableScripts" -Value ”0”  -PropertyType "DWord"
+    Set-Itemproperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell" -Name "EnableScripts" -Value ”0” 
+    New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableLUA" -Value ”0”  -PropertyType "DWord"
+    Set-Itemproperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableLUA" -Value ”0” 
     set-executionpolicy AllSigned
-    } '4' {
-    Get-LocalUser
 
+    } '4' {
+
+    Get-LocalUser | Out-Host
+    Write-Host "Doesn't work on disabled Users"
     $User = Read-Host -Prompt 'Input the user name'
-    Set-ADAccountPassword -Identity $user -Rest -NewPassword (ConvertTo-SecureString -AsPlainText "AegisHolo0006!" -Force)
+    Set-LocalUser -Name $User -Password (ConvertTo-SecureString -AsPlainText "AegisHolo0006!" -Force)
 
     } 'B' {
     if ($selection -eq 'B') {return $start}
@@ -145,6 +151,10 @@ do
     Write-Host "5: Login Settings"
     Write-Host "6: Turns on Automatic Updates"
     Write-Host "7: Enable Smart Screen"
+    Write-Host "8: Disable Vulnerable Services"
+    Write-Host "9: Enable Secure Services (WIP)"
+    Write-Host "10: Deletes all files that go against no fun policy (Proceed with Caution)"
+    Write-Host "11: Set Audit Policies"
     Write-Host "B: Press 'B' to Return to Menu."
     Write-Host "Q: Press 'Q' to quit."
 }
@@ -261,8 +271,113 @@ do
     New-ItemProperty -Path "HKLM\SOFTWARE\Policies\Microsoft" -Name "SmartScreenForTrustedDownloadsEnabled" -Value ”1”  -PropertyType "DWord"
     Set-Itemproperty -Path "HKLM\SOFTWARE\Policies\Microsoft" -Name "SmartScreenForTrustedDownloadsEnabled" -Value ”1” 
 
+    } "8" {
+    get-service | Where-Object {$_.Name -eq "Spooler"} |  Stop-Service
+    Set-Service "Spooler" -StartupType  Disabled
+    get-service | Where-Object {$_.Name -eq "RetailDemo"} |  Stop-Service
+    Set-Service "RetailDemo" -StartupType  Disabled
+    get-service | Where-Object {$_.Name -eq "seclogon"} |  Stop-Service
+    Set-Service "seclogon" -StartupType  Disabled
+    get-service | Where-Object {$_.Name -eq "SNMPTRAP"} |  Stop-Service
+    Set-Service "SNMPTRAP" -StartupType  Disabled
+    get-service | Where-Object {$_.Name -eq "XboxNetApiSvc"} |  Stop-Service
+    Set-Service "XboxNetApiSvc" -StartupType  Disabled
+    get-service | Where-Object {$_.Name -eq "XblGameSave"} |  Stop-Service
+    Set-Service "XblGameSave" -StartupType  Disabled
+    get-service | Where-Object {$_.Name -eq "XblAuthManager"} |  Stop-Service
+    Set-Service "XblAuthManager" -StartupType  Disabled
+    get-service | Where-Object {$_.Name -eq "XboxGipSvc"} |  Stop-Service
+    Set-Service "XboxGipSvc" -StartupType  Disabled
+    get-service | Where-Object {$_.Name -eq "upnphost"} |  Stop-Service
+    Set-Service "upnphost" -StartupType  Disabled
+    get-service | Where-Object {$_.Name -eq "RemoteRegistry"} |  Stop-Service
+    Set-Service "RemoteRegistry" -StartupType  Disabled
+    get-service | Where-Object {$_.Name -eq "PlugPlay"} |  Stop-Service
+    Set-Service "PlugPlay" -StartupType  Disabled
+    get-service | Where-Object {$_.Name -eq "lfsvc"} |  Stop-Service
+    Set-Service "lfsvc" -StartupType  Disabled
+    get-service | Where-Object {$_.Name -eq "bthserv"} |  Stop-Service
+    Set-Service "bthserv" -StartupType  Disabled
+    get-service | Where-Object {$_.Name -eq "BTAGService"} |  Stop-Service
+    Set-Service "BTAGService" -StartupType  Disabled
+   
+    } "9" {
+    ##Access denied for some reason
+    get-service | Where-Object {$_.Name -eq "BDESVC"} |  Start-Service 
+    Set-Service "BDESVC" -StartupType  Boot 
+    get-service | Where-Object {$_.Name -eq "wbengine"} |  Start-Service 
+    Set-Service "wbengine" -StartupType  Boot 
+    get-service | Where-Object {$_.Name -eq "BFE"} |  Start-Service 
+    Set-Service "BFE" -StartupType  Boot 
+    get-service | Where-Object {$_.Name -eq "AppIDSvc"} |  Start-Service 
+    Set-Service "AppIDSvc" -StartupType  Boot 
+    get-service | Where-Object {$_.Name -eq "WaaSMedicSvc"} |  Start-Service 
+    Set-Service "WaaSMedicSvc" -StartupType  Boot 
+    get-service | Where-Object {$_.Name -eq "EventLog"} |  Start-Service 
+    Set-Service "EventLog" -StartupType  Boot -force
+    get-service | Where-Object {$_.Name -eq "Wecsvc"} |  Start-Service 
+    Set-Service "Wecsvc" -StartupType  Boot 
+    get-service | Where-Object {$_.Name -eq "mpssvc"} |  Start-Service 
+    Set-Service "mpssvc" -StartupType  Boot 
+    get-service | Where-Object {$_.Name -eq "Sense"} |  Start-Service 
+    Set-Service "Sense" -StartupType  Boot 
+    get-service | Where-Object {$_.Name -eq "svsvc"} |  Start-Service 
+    Set-Service "svsvc" -StartupType  Boot 
+    get-service | Where-Object {$_.Name -eq "mpssvc"} |  Start-Service 
+    Set-Service "mpssvc" -StartupType  Boot 
+    
+    } "10" {
+    C:
+    cd ..
+    cd users
+    Remove-Item C:\Users\hidden-RO-file*.jpg
+    Remove-Item C:\Users\hidden-RO-file*.mp4
+    Remove-Item C:\Users\hidden-RO-file*.mp3
+    Remove-Item C:\Users\hidden-RO-file*.mov
+    Remove-Item C:\Users\hidden-RO-file*.png
+    Remove-Item C:\Users\hidden-RO-file*.jpeg
+    Remove-Item C:\Users\hidden-RO-file*.mkv
+    Remove-Item C:\Users\hidden-RO-file*.wav
+    Remove-Item C:\Users\hidden-RO-file*.movpkg
+    Remove-Item C:\Users\hidden-RO-file*.gif
+    Remove-Item C:\Users\hidden-RO-file*.aif
+    Remove-Item C:\Users\hidden-RO-file*.cda
+    Remove-Item C:\Users\hidden-RO-file*.midi
+    Remove-Item C:\Users\hidden-RO-file*.mid
+    Remove-Item C:\Users\hidden-RO-file*.mpa
+    Remove-Item C:\Users\hidden-RO-file*.ogg
+    Remove-Item C:\Users\hidden-RO-file*.wma
+    Remove-Item C:\Users\hidden-RO-file*.wpl
+    Remove-Item C:\Users\hidden-RO-file*.ai
+    Remove-Item C:\Users\hidden-RO-file*.bmp
+    Remove-Item C:\Users\hidden-RO-file*.ico
+    Remove-Item C:\Users\hidden-RO-file*.ps
+    Remove-Item C:\Users\hidden-RO-file*.psd
+    Remove-Item C:\Users\hidden-RO-file*.svg
+    Remove-Item C:\Users\hidden-RO-file*.tif
+    Remove-Item C:\Users\hidden-RO-file*.tiff
+    Remove-Item C:\Users\hidden-RO-file*.avi
+    Remove-Item C:\Users\hidden-RO-file*.flv
+    Remove-Item C:\Users\hidden-RO-file*.h264
+    Remove-Item C:\Users\hidden-RO-file*.m4v
+    Remove-Item C:\Users\hidden-RO-file*.mpg
+    Remove-Item C:\Users\hidden-RO-file*.mpeg
+    Remove-Item C:\Users\hidden-RO-file*.mmv
+    Remove-Item C:\Users\hidden-RO-file*.acc
+    Remove-Item C:\Users\hidden-RO-file*.m2ts
+    Remove-Item C:\Users\hidden-RO-file*.dts
+    Remove-Item C:\Users\hidden-RO-file*.wmv
 
-
+    } "11" {
+    auditpol /set /category:"System" /failure:enable /success:enable
+    auditpol /set /category:"Account Management" /failure:enable /success:enable
+    auditpol /set /category:"Account Logon" /failure:enable /success:enable
+    auditpol /set /category:"Logon/Logoff" /failure:enable /success:enable
+    auditpol /set /category:"Policy Change" /failure:enable /success:enable
+    auditpol /set /category:"Detailed Tracking" /failure:enable /success:enable
+    auditpol /set /category:"DS Access" /failure:enable /success:enable
+    auditpol /set /category:"Object Access" /failure:enable /success:enable
+    auditpol /set /category:"Privilege Use" /failure:enable /success:enable
 
 
     }
