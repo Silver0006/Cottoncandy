@@ -12,15 +12,19 @@ case $choice in
   1)  sudo apt-get upgrade
   ;;
   2)
+      getent passwd
       read user
       echo '$user:AegisHolo0006!' | sudo chpasswd"
   ;;
-  3)  echo "You have selected the option 3"
-      echo "Selected Fruit is Mango. ";;    
+  3)  
+      getent passwd
+      read user
+      read group
+      adduser $user $group;;    
   Help)  echo "SELECT YOUR FAVORITE FRUIT";
       echo "1. Update"
       echo "2. Change User Password"
-      echo "3. Mango"
+      echo "3. Add User to Group"
       echo "4. Exit from menu ";;
   *) echo "invalid option";;
   
