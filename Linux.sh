@@ -1,32 +1,29 @@
-PS3='Please enter your choice: '
-options=("Update" "Basic Programs" "Option 3" "Quit")
-select opt in "${options[@]}"
-do
-    case $opt in
-        "Update")
-            sudo apt update
-            ;;
-            
-        "Basic Programs")
-            sudo apt-get install libpam-cracklib -y
-sudo apt-get install pam.d -y
-sudo apt-get install gufw -y
-sudo apt-get install clamav -y
-sudo apt-get install clamtk -y
-sudo apt-get install auditd -y (sudo auditctl -e 1)(to config, not 100% tested)
-sudo apt-get install bum -y
-sudo apt-get install gnome-system-tools -y
+sudo
+echo -n "Enter your menu choice [1-4]: "
 
-            ;;
-        "3")
-            echo "you chose choice $REPLY which is $opt"
-            ;;
-        "All")
-            
-            ;;            
-        "Quit")
-            break
-            ;;
-        *) echo "invalid option $REPLY";;
-    esac
+
+while :
+do
+
+read choice
+
+case $choice in
+  
+  1)  sudo apt-get upgrade
+  ;;
+  2)
+      read user
+      echo '$user:AegisHolo0006!' | sudo chpasswd"
+  ;;
+  3)  echo "You have selected the option 3"
+      echo "Selected Fruit is Mango. ";;    
+  Help)  echo "SELECT YOUR FAVORITE FRUIT";
+      echo "1. Update"
+      echo "2. Change User Password"
+      echo "3. Mango"
+      echo "4. Exit from menu ";;
+  *) echo "invalid option";;
+  
+esac
+  echo -n "Enter your menu choice [1-4]: "
 done
