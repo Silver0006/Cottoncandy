@@ -20,7 +20,15 @@ case $choice in
       getent passwd
       read user
       read group
-      adduser $user $group;;    
+      adduser $user $group
+  ;;   
+  4)
+      getent passwd
+      read id
+      id $id 
+  5) 
+  
+  
   Help)  echo "SELECT YOUR FAVORITE FRUIT";
       echo "1. Update"
       echo "2. Change User Password"
