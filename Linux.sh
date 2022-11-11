@@ -1,5 +1,4 @@
 sudo
-echo -n "Enter your menu choice [1-4]: "
 
 
 while :
@@ -34,10 +33,10 @@ case $choice in
       echo "2. Change User Password"
       echo "3. Add User to Group"
       echo "4. List User Id"
-      echo "5. Change User Password"
+      echo "5. aChange User Password"
       echo "6. Add User to Group"
   *) echo "invalid option";;
   
 esac
-  echo -n "Enter your menu choice [1-4]: "
+
 done
