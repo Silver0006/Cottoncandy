@@ -27,13 +27,15 @@ case $choice in
       read id
       id $id 
   5) 
-  
+  locate ' *.mp3'
   
   Help)  echo "SELECT YOUR FAVORITE FRUIT";
       echo "1. Update"
       echo "2. Change User Password"
       echo "3. Add User to Group"
-      echo "4. Exit from menu ";;
+      echo "4. List User Id"
+      echo "5. Change User Password"
+      echo "6. Add User to Group"
   *) echo "invalid option";;
   
 esac
