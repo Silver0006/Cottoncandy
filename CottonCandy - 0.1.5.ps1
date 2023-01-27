@@ -21,6 +21,7 @@ do
     {
     '1' {
     $tools = function Show-Menu {
+
     
         $Subtitle1 = 'Tools'
    
@@ -74,10 +75,10 @@ do
     Enable-LocalUser -Name "$User"
     Set-LocalUser -Name $User -Password (ConvertTo-SecureString -AsPlainText "AegisHolo0006!" -Force)
     
-    $funky = Read-Host -Prompt 'Y/N Set default individual user password settings'
-    if ($funky -eq 'Y') {
-    Set-LocalUser -Name "$User" -PasswordNeverExpires 0
-     }
+   ## $funky = Read-Host -Prompt 'Y/N Set default individual user password settings'
+   ## if ($funky -eq 'Y') {
+   ## Set-LocalUser -Name "$User" -PasswordNeverExpires 0
+   ##  }
     
     } '5' {
     Get-LocalUser | Out-Host
@@ -444,46 +445,59 @@ do
     Set-Service "wuauserv" -StartupType  Automatic 
     
     } "10" {
-    C:
-    cd ..
-    Remove-Item 'C:\Users\*' -Recurse -Include *.jpg -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.mp4 -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.mp3 -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.mov -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.png -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.jpeg -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.mkv -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.wav -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.movpkg -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.gif -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.aif -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.cda -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.midi -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.mid -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.mpa -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.ogg -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.wma -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.wpl -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.ai -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.bmp -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.ico -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.ps -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.psd -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.svg -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.tif -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.tiff -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.avi -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.flv -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.h264 -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.m4v -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.mpg -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.mpeg -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.mmv -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.acc -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.m2ts -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.dts -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.wmv -Force
-    Remove-Item 'C:\Users\*' -Recurse -Include *.jfif -Force
+    Start-Process cmd "/c del /S C:\Users\*.jpg"
+    Start-Process cmd "/c del /S C:\Users\*.mp4"
+    Start-Process cmd "/c del /S C:\Users\*.mp3"
+    Start-Process cmd "/c del /S C:\Users\*.mov"
+    Start-Process cmd "/c del /S C:\Users\*.png"
+    Start-Process cmd "/c del /S C:\Users\*.jpeg"
+    Start-Process cmd "/c del /S C:\Users\*.mkv"
+    Start-Process cmd "/c del /S C:\Users\*.wav"
+    Start-Process cmd "/c del /S C:\Users\*.movpkg"
+    Start-Process cmd "/c del /S C:\Users\*.gif"
+    Start-Process cmd "/c del /S C:\Users\*.aif"
+    Start-Process cmd "/c del /S C:\Users\*.cda"
+    Start-Process cmd "/c del /S C:\Users\*.midi"
+    Start-Process cmd "/c del /S C:\Users\*.mid"
+    Start-Process cmd "/c del /S C:\Users\*.mpa"
+    Start-Process cmd "/c del /S C:\Users\*.ogg"
+    Start-Process cmd "/c del /S C:\Users\*.wma"
+    Start-Process cmd "/c del /S C:\Users\*.wpl"
+    Start-Process cmd "/c del /S C:\Users\*.ai"
+    Start-Process cmd "/c del /S C:\Users\*.bmp"
+    Start-Process cmd "/c del /S C:\Users\*.ico"
+    Start-Process cmd "/c del /S C:\Users\*.ps"
+    Start-Process cmd "/c del /S C:\Users\*.psd"
+    Start-Process cmd "/c del /S C:\Users\*.svg"
+    Start-Process cmd "/c del /S C:\Users\*.tif"
+    Start-Process cmd "/c del /S C:\Users\*.tiff"
+    Start-Process cmd "/c del /S C:\Users\*.avi"
+    Start-Process cmd "/c del /S C:\Users\*.flv"
+    Start-Process cmd "/c del /S C:\Users\*.h264"
+    Start-Process cmd "/c del /S C:\Users\*.m4v"
+    Start-Process cmd "/c del /S C:\Users\*.mpg"
+    Start-Process cmd "/c del /S C:\Users\*.mpeg"
+    Start-Process cmd "/c del /S C:\Users\*.mmv"
+    Start-Process cmd "/c del /S C:\Users\*.acc"
+    Start-Process cmd "/c del /S C:\Users\*.m2ts"
+    Start-Process cmd "/c del /S C:\Users\*.dts"
+    Start-Process cmd "/c del /S C:\Users\*.wmv"
+    Start-Process cmd "/c del /S C:\Users\*.webp"
+    Start-Process cmd "/c del /S C:\Users\*.3GP"
+    Start-Process cmd "/c del /S C:\Users\*.ADTS"
+    Start-Process cmd "/c del /S C:\Users\*.FLAC"
+    Start-Process cmd "/c del /S C:\Users\*.mpeg-2"
+    Start-Process cmd "/c del /S C:\Users\*.mpeg-4"
+    Start-Process cmd "/c del /S C:\Users\*.WebM"
+    Start-Process cmd "/c del /S C:\Users\*.DivX"
+    Start-Process cmd "/c del /S C:\Users\*.ASF"
+    Start-Process cmd "/c del /S C:\Users\*.jfif"
+
+
+
+
+	
+	
 
     } "11" {
     auditpol /set /category:"System" /failure:enable /success:enable
