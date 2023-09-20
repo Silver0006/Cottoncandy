@@ -1,4 +1,4 @@
-﻿#I hate Powershell 
+#I hate Powershell 
 set-executionpolicy Unrestricted
 $start = function Show-Menu {
     
@@ -35,6 +35,7 @@ do
     Write-Host "5: Create User"
     Write-Host "6: Delete User"
     Write-Host "7: Give Administrator Access"
+    Write-Host "8: Special Beam Cannon"
     Write-Host "B: Press 'B' to Return to Menu."
     Write-Host "Q: Press 'Q' to quit."
 }
@@ -74,7 +75,8 @@ do
     $User = Read-Host -Prompt 'Input the user name'
     Enable-LocalUser -Name "$User"
     Set-LocalUser -Name $User -Password (ConvertTo-SecureString -AsPlainText "AegisHolo0006!" -Force)
-    
+    Set-LocalUser -Name "$User" -PasswordNeverExpires 0
+    Set-LocalUser -Name "$User" -NoChangePassword 0
    ## $funky = Read-Host -Prompt 'Y/N Set default individual user password settings'
    ## if ($funky -eq 'Y') {
    ## Set-LocalUser -Name "$User" -PasswordNeverExpires 0
@@ -95,6 +97,18 @@ do
     Get-LocalUser | Out-Host
     $User = Read-Host -Prompt 'Input the user name'
     Add-LocalGroupMember -Group "Administrators" -Member "$User"
+
+    } '8' {
+    winget list
+    $app = Read-Host -Prompt 'Input the App Name'
+    try {
+        $MyApp = Get-WmiObject -Class Win32_Product | Where-Object{$_.Name -eq "$app"}
+    }
+    Catch {
+        $MyApp = Get-Package -Provider Programs -IncludeWindowsInstaller -Name "$app"
+    }
+    $MyApp.Uninstall()
+
 
     } 'B' {
     if ($selection -eq 'B') {return $start}
@@ -124,7 +138,9 @@ do
     Write-Host "8: Install 7Zip" 
     Write-Host "9: Install Google Chrome (Not Working Install Manually)" 
     Write-Host "10: Install MyEventViewer" 
-    Write-Host "11: Install vlc" 
+    Write-Host "11: Install VLC"
+    Write-Host "12: Install Edge" 
+    Write-Host "13: Install Audacity"
     Write-Host "B: Press B to Return to Menu."
     Write-Host "Q: Press Q to quit."
 }
@@ -157,7 +173,12 @@ do
     choco install myeventviewer -y
     } "11" {
     choco install vlc -y
-    
+    } "12" {
+    choco install microsoft-edge -y
+    } "13" {
+    choco install audacity -y
+
+
     } 'b' {
     if ($selection = 'b') {return $start}
     }
@@ -266,6 +287,7 @@ do
     New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive"
     New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive" -Name "DisableFileSyncNGSC" -Value ”1”  -PropertyType "DWord"
     Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\OneDrive" -Name "DisableFileSyncNGSC" -Value ”1” 
+    
     } "5" {
     New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "DisableCAD" -Value ”0”  -PropertyType "DWord"
     Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "DisableCAD" -Value ”0”  
@@ -415,35 +437,52 @@ do
     Set-Service "XboxNetApiSvc" -StartupType  Disabled
     get-service | Where-Object {$_.Name -eq "PlugPlay"} |  Stop-Service -Force
     Set-Service "PlugPlay" -StartupType  Disabled
+
     
+
 
    
     } "9" {
     ##Access denied for some reason
    
     get-service | Where-Object {$_.Name -eq "BDESVC"} |  Start-Service 
-    Set-Service "BDESVC" -StartupType  Automatic 
+    New-ItemProperty -Path "HKLM:\System\CurrentControlSet\Services\BDESVC" -Name "Start" -Value ”2” -PropertyType "DWord"
+    Set-Itemproperty -Path "HKLM:\System\CurrentControlSet\Services\BDESVC" -Name "Start" -Value ”2”  
     get-service | Where-Object {$_.Name -eq "wbengine"} |  Start-Service 
-    Set-Service "wbengine" -StartupType  Automatic 
+    New-ItemProperty -Path "HKLM:\System\CurrentControlSet\Services\wbengine" -Name "Start" -Value ”2” -PropertyType "DWord"
+    Set-Itemproperty -Path "HKLM:\System\CurrentControlSet\Services\wbengine" -Name "Start" -Value ”2”  
     get-service | Where-Object {$_.Name -eq "BFE"} |  Start-Service 
-    Set-Service "BFE" -StartupType  Automatic 
+    New-ItemProperty -Path "HKLM:\System\CurrentControlSet\Services\BFE" -Name "Start" -Value ”2” -PropertyType "DWord"
+    Set-Itemproperty -Path "HKLM:\System\CurrentControlSet\Services\BFE" -Name "Start" -Value ”2”  
     get-service | Where-Object {$_.Name -eq "AppIDSvc"} |  Start-Service 
-    Set-Service "AppIDSvc" -StartupType  Automatic 
+    New-ItemProperty -Path "HKLM:\System\CurrentControlSet\Services\AppIDSvc" -Name "Start" -Value ”2” -PropertyType "DWord"
+    Set-Itemproperty -Path "HKLM:\System\CurrentControlSet\Services\AppIDSvc" -Name "Start" -Value ”2”  
     get-service | Where-Object {$_.Name -eq "WaaSMedicSvc"} |  Start-Service 
-    Set-Service "WaaSMedicSvc" -StartupType  Automatic 
+    New-ItemProperty -Path "HKLM:\System\CurrentControlSet\Services\WaaSMedicSvc" -Name "Start" -Value ”2” -PropertyType "DWord"
+    Set-Itemproperty -Path "HKLM:\System\CurrentControlSet\Services\WaaSMedicSvc" -Name "Start" -Value ”2”  
     get-service | Where-Object {$_.Name -eq "EventLog"} |  Start-Service 
-    Set-Service "EventLog" -StartupType  Automatic
+    New-ItemProperty -Path "HKLM:\System\CurrentControlSet\Services\EventLog" -Name "Start" -Value ”2” -PropertyType "DWord"
+    Set-Itemproperty -Path "HKLM:\System\CurrentControlSet\Services\EventLog" -Name "Start" -Value ”2”  
     get-service | Where-Object {$_.Name -eq "Wecsvc"} |  Start-Service 
-    Set-Service "Wecsvc" -StartupType  Automatic 
+    New-ItemProperty -Path "HKLM:\System\CurrentControlSet\Services\Wecsvc" -Name "Start" -Value ”2” -PropertyType "DWord"
+    Set-Itemproperty -Path "HKLM:\System\CurrentControlSet\Services\Wecsvc" -Name "Start" -Value ”2”
     get-service | Where-Object {$_.Name -eq "Sense"} |  Start-Service 
-    Set-Service "Sense" -StartupType  Automatic 
+    New-ItemProperty -Path "HKLM:\System\CurrentControlSet\Services\Sense" -Name "Start" -Value ”2” -PropertyType "DWord"
+    Set-Itemproperty -Path "HKLM:\System\CurrentControlSet\Services\Sense" -Name "Start" -Value ”2”  
     get-service | Where-Object {$_.Name -eq "svsvc"} |  Start-Service 
-    Set-Service "svsvc" -StartupType  Automatic 
+    New-ItemProperty -Path "HKLM:\System\CurrentControlSet\Services\svsvc" -Name "Start" -Value ”2” -PropertyType "DWord"
+    Set-Itemproperty -Path "HKLM:\System\CurrentControlSet\Services\svsvc" -Name "Start" -Value ”2”  
     get-service | Where-Object {$_.Name -eq "mpssvc"} |  Start-Service 
-    Set-Service "mpssvc" -StartupType  Automatic 
+    New-ItemProperty -Path "HKLM:\System\CurrentControlSet\Services\mpssvc" -Name "Start" -Value ”2” -PropertyType "DWord"
+    Set-Itemproperty -Path "HKLM:\System\CurrentControlSet\Services\mpssvc" -Name "Start" -Value ”2”  
     get-service | Where-Object {$_.Name -eq "wuauserv"} |  Start-Service 
-    Set-Service "wuauserv" -StartupType  Automatic 
+    New-ItemProperty -Path "HKLM:\System\CurrentControlSet\Services\wuauserv" -Name "Start" -Value ”2” -PropertyType "DWord"
+    Set-Itemproperty -Path "HKLM:\System\CurrentControlSet\Services\wuauserv" -Name "Start" -Value ”2”  
     
+    
+
+
+
     } "10" {
     Start-Process cmd "/c del /S C:\Users\*.jpg"
     Start-Process cmd "/c del /S C:\Users\*.mp4"
