@@ -35,7 +35,11 @@ do
     Write-Host "5: Create User"
     Write-Host "6: Delete User"
     Write-Host "7: Give Administrator Access"
-    Write-Host "8: Special Beam Cannon"
+    Write-Host "8: Special Beam Cannon (Needs Chocolatey)"
+    Write-Host "9: FIND MY FILE"
+    Write-Host "10: Check for file shares"
+    Write-Host "11: Clear DNS"
+    Write-Host "12: Enable System Protection for 2GB"
     Write-Host "B: Press 'B' to Return to Menu."
     Write-Host "Q: Press 'Q' to quit."
 }
@@ -70,17 +74,16 @@ do
     set-executionpolicy AllSigned
 
     } '4' {
-    ##Design Automatic Password Change at some point
-    Get-LocalUser | Out-Host
-    $User = Read-Host -Prompt 'Input the user name'
+    $users = Get-LocalUser | Select-Object -ExpandProperty Name
+    foreach ($user in $users) {
     Enable-LocalUser -Name "$User"
-    Set-LocalUser -Name $User -Password (ConvertTo-SecureString -AsPlainText "AegisHolo0006!" -Force)
+    Set-LocalUser -Name $User -Password (ConvertTo-SecureString -AsPlainText "CyberPatriot123!" -Force)
     Set-LocalUser -Name "$User" -PasswordNeverExpires 0
     Set-LocalUser -Name "$User" -NoChangePassword 0
-   ## $funky = Read-Host -Prompt 'Y/N Set default individual user password settings'
-   ## if ($funky -eq 'Y') {
-   ## Set-LocalUser -Name "$User" -PasswordNeverExpires 0
-   ##  }
+    Write-Output $user
+} 
+
+
     
     } '5' {
     Get-LocalUser | Out-Host
@@ -99,15 +102,42 @@ do
     Add-LocalGroupMember -Group "Administrators" -Member "$User"
 
     } '8' {
-    winget list
+    try {
+        winget list --accept-source-agreements
+    }
+    Catch {
+        Write-Host "Installing Winget"
+        choco install winget -y
+        choco install winget.powershell -y
+        winget list --accept-source-agreements 
+    }
     $app = Read-Host -Prompt 'Input the App Name'
     try {
         $MyApp = Get-WmiObject -Class Win32_Product | Where-Object{$_.Name -eq "$app"}
+        $MyApp.Uninstall()
     }
     Catch {
-        $MyApp = Get-Package -Provider Programs -IncludeWindowsInstaller -Name "$app"
+        Get-Package -Provider Programs -IncludeWindowsInstaller -Name "$app" | ForEach-Object {
+        Uninstall-Package -Name $_.Name -ProviderName $_.ProviderName -Force}
     }
-    $MyApp.Uninstall()
+    
+    
+    } '9' {
+    Write-Output "Put space and Y after file type to avoid problematic directories (Ex: mp4 Y)"
+    $file = Read-Host -Prompt 'Input the file type (Ex: mp4)' 
+    $file, $confirm = $file -split ' ', 2
+    Write-Output $file, $confirm
+    if ($confirm -eq "Y") {
+    Get-ChildItem -Path C:\ -Filter "*$file" -Recurse -ErrorAction SilentlyContinue | Where-Object { $_.FullName -notlike 'C:\Windows\*' }
+    }
+    else{Get-ChildItem -path C:\ -filter *.$file -file -ErrorAction silentlycontinue -recurse}
+    } '10' {
+    net share
+    } '11' {
+    ipconfig /flushdns
+    } '12' {
+    Enable-ComputerRestore -Drive C:
+    Start-Process cmd "vssadmin resize shadowstorage /for=C: /on=C: /maxsize=10GB"
 
 
     } 'B' {
@@ -141,6 +171,7 @@ do
     Write-Host "11: Install VLC"
     Write-Host "12: Install Edge" 
     Write-Host "13: Install Audacity"
+    Write-Host "14: Install Powershell 7"
     Write-Host "B: Press B to Return to Menu."
     Write-Host "Q: Press Q to quit."
 }
@@ -177,6 +208,8 @@ do
     choco install microsoft-edge -y
     } "13" {
     choco install audacity -y
+    } "14" {
+    choco install powershell-core --pre -y
 
 
     } 'b' {
@@ -233,8 +266,6 @@ do
     New-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Real-Time Protection" -Name "DisableRealtimeMonitoring" -Value ”0”  -PropertyType "DWord"
     Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows Defender\Real-Time Protection" -Name "DisableRealtimeMonitoring" -Value ”0” 
     New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows\Installer"
-    New-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\Installer" -Name "AlwaysInstallElevated" -Value ”0”  -PropertyType "DWord"
-    Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\Installer" -Name "AlwaysInstallElevated" -Value ”0” 
     New-Item -Path "HKCU:\Software\Policies\Microsoft\Windows\Installer"
     New-ItemProperty -Path "HKCU:\Software\Policies\Microsoft\Windows\Installer" -Name "AlwaysInstallElevated" -Value ”0”  -PropertyType "DWord"
     Set-ItemProperty -Path "HKCU:\Software\Policies\Microsoft\Windows\Installer" -Name "AlwaysInstallElevated" -Value ”0” 
@@ -443,7 +474,7 @@ do
 
    
     } "9" {
-    ##Access denied for some reason
+    ##Access denied for some reason? Need to recheck
    
     get-service | Where-Object {$_.Name -eq "BDESVC"} |  Start-Service 
     New-ItemProperty -Path "HKLM:\System\CurrentControlSet\Services\BDESVC" -Name "Start" -Value ”2” -PropertyType "DWord"
