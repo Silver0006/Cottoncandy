@@ -1,4 +1,4 @@
-#I hate Powershell 
+﻿#I hate Powershell 
 set-executionpolicy Unrestricted
 $start = function Show-Menu {
     
@@ -111,16 +111,22 @@ do
         choco install winget.powershell -y
         winget list --accept-source-agreements 
     }
-    $app = Read-Host -Prompt 'Input the App Name'
+    $app = Read-Host -Prompt 'Input the App Name (Also try Id)'
     try {
         $MyApp = Get-WmiObject -Class Win32_Product | Where-Object{$_.Name -eq "$app"}
         $MyApp.Uninstall()
     }
     Catch {
+        try {
+        winget uninstall --id $app
+        }
+        Catch {
         Get-Package -Provider Programs -IncludeWindowsInstaller -Name "$app" | ForEach-Object {
-        Uninstall-Package -Name $_.Name -ProviderName $_.ProviderName -Force}
+            Uninstall-Package -Name $_.Name -ProviderName $_.ProviderName -Force}
+        }
     }
     
+
     
     } '9' {
     Write-Output "Put space and Y after file type to avoid problematic directories (Ex: mp4 Y)"
