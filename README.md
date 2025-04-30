@@ -1,6 +1,6 @@
 ![C++20](https://img.shields.io/badge/C++-20-blue) 
 
-##Plan
+## Plan
 1. Write functions to make interactions with windows registry easier
 2. Replicate functionality of powershell script in c++
 3. Expand to Linux
